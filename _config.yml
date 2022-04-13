@@ -48,8 +48,8 @@ minima:
 # If you want to link only specific pages in your header, uncomment
 # this and add the path to the pages in order as they should show up
 header_pages:
- - about.md
- - category.md
+ - _pages/about.md
+ - _pages/category.md
 
 # Build settings
 theme: minima
@@ -65,3 +65,7 @@ disqus:
     shortname: genius-5
 
 url: "https://genius721.github.io"
+
+include:
+ - _pages
+ - .htaccess
