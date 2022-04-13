@@ -50,6 +50,7 @@ minima:
 header_pages:
  - _pages/about.md
  - _pages/category.md
+ - _pages/tag.md
 
 # Build settings
 theme: minima
