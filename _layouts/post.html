@@ -1,6 +1,7 @@
 ---
 layout: default
 ---
+<div class="toc"></div>
 <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
@@ -11,28 +12,72 @@ layout: default
         {{ page.date | date: date_format }}
       </time>
       {%- if page.modified_date -%}
-        ~ 
-        {%- assign mdate = page.modified_date | date_to_xmlschema -%}
-        <time class="dt-modified" datetime="{{ mdate }}" itemprop="dateModified">
-          {{ mdate | date: date_format }}
-        </time>
+      ~
+      {%- assign mdate = page.modified_date | date_to_xmlschema -%}
+      <time class="dt-modified" datetime="{{ mdate }}" itemprop="dateModified">
+        {{ mdate | date: date_format }}
+      </time>
       {%- endif -%}
       {%- if page.author -%}
-        • {% for author in page.author %}
-          <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-            <span class="p-author h-card" itemprop="name">{{ author }}</span></span>
-            {%- if forloop.last == false %}, {% endif -%}
-        {% endfor %}
-      {%- endif -%}</p>
+      • {% for author in page.author %}
+      <span itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span class="p-author h-card" itemprop="name">{{ author }}</span></span>
+      {%- if forloop.last == false %}, {% endif -%}
+      {% endfor %}
+      {%- endif -%}
+    </p>
   </header>
 
-  <div class="post-content e-content" itemprop="articleBody">
+  <div class="post-content e-content" itemprop="articleBody" id="content">
     {{ content }}
   </div>
 
   {%- if site.disqus.shortname -%}
-    {%- include disqus_comments.html -%}
+  {%- include disqus_comments.html -%}
   {%- endif -%}
 
   <a class="u-url" href="{{ page.url | relative_url }}" hidden></a>
 </article>
+
+<!-- toc -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.4.2/tocbot.css">
+
+<script>
+  
+  var content = document.querySelector('#content')
+  var headings = content.querySelectorAll('h1, h2, h3, h1, h2, h6, h7')
+  var headingMap = {}
+  Array.prototype.forEach.call(headings, function (heading) {
+    var id = heading.id ? heading.id : heading.textContent.trim().toLowerCase()
+      .split(' ').join('-').replace(/[\!\@\#\$\%\^\&\*\(\):]/ig, '')
+    headingMap[id] = !isNaN(headingMap[id]) ? ++headingMap[id] : 0
+    if (headingMap[id]) {
+      heading.id = id + '-' + headingMap[id]
+    } else {
+      heading.id = id
+    }
+  })
+
+  tocbot.init({
+    tocSelector: '.toc',
+    contentSelector: '#content',
+    headingSelector: 'h1, h2, h3',
+    hasInnerContainers: false
+  });
+
+  $(document).ready(function () {
+    $('.toc').addClass('toc-absolute');
+    var toc_top = $('.toc').offset().top - 165;
+    $(window).scroll(function () {
+      if ($(this).scrollTop() >= toc_top) {
+        $('.toc').addClass('toc-fixed');
+        $('.toc').removeClass('toc-absolute');
+      } else {
+        $('.toc').addClass('toc-absolute');
+        $('.toc').removeClass('toc-fixed');
+      }
+    });
+  });
+
+</script>
