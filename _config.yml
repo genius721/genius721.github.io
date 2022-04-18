@@ -70,3 +70,5 @@ url: "https://genius721.github.io"
 include:
  - _pages
  - .htaccess
+
+permalink: /:categories/:title/
