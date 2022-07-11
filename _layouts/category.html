@@ -18,6 +18,7 @@ layout: default
   $(document).ready(function(){
     if(window.location.hash){
       var hashtag = window.location.hash.substr(1);
+      console.log("hashtag : ", hashtag);
       var target = document.getElementById(hashtag);
       $(target).show();
       };
